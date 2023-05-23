@@ -6,9 +6,7 @@ type Job = { region: string; duration: number; statusCode: number };
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [url, setUrl] = useState(
-    "https://jsonplaceholder.typicode.com/todos/1"
-  );
+  const [url, setUrl] = useState("https://zolplay.com/");
   const [isRunning, setIsRunning] = useState(false);
 
   const handleTest = async () => {
@@ -37,7 +35,7 @@ export default function Home() {
         <input
           type="url"
           required={false}
-          className="text-blue-400"
+          className="text-blue-300 w-80"
           placeholder="Enter your URL"
           value={url}
           onChange={(e) => setUrl(e.target.value)}

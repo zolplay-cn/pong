@@ -10,11 +10,12 @@ export const createHandler = (region: string) => {
     try {
       const startAt = Date.now();
 
-      await fetch(withQuery(url, { __t: startAt }));
+      await fetch(withQuery(url, { __pong: startAt }));
 
       return NextResponse.json({
         region,
         duration: Date.now() - startAt,
+
         code: 200,
       });
     } catch (error) {
