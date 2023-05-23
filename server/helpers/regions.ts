@@ -12,7 +12,7 @@
       }
   },{}))
  */
-export const regions = {
+export const regions: Record<string, { name: string; location: string }> = {
   arn1: {
     name: "eu-north-1",
     location: "Stockholm, Sweden",
