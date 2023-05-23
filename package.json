@@ -1,23 +1,32 @@
 {
-  "name": "nuxt-app",
+  "name": "pong",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "NITRO_PRESET=vercel-edge nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "gen-api": "tsx ./server/scripts/routesGenerator.ts"
-  },
-  "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.7.0",
-    "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18",
-    "fs-extra": "^11.1.1",
-    "nuxt": "^3.5.1",
-    "tsx": "^3.12.7"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "gen-api": "tsx ./scripts/routesGenerator.ts"
   },
   "dependencies": {
+    "@types/node": "20.2.3",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.3",
+    "next": "13.4.3",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4",
     "ufo": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "fs-extra": "^11.1.1",
+    "tsx": "^3.12.7"
   }
 }
