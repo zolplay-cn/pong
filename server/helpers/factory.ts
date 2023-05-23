@@ -1,14 +1,28 @@
-export const createHandler = (region: string) => {
-  return defineEventHandler((event) => {
-    const cityHeader = getHeader(event, "x-vercel-ip-city");
-    const city = cityHeader ? decodeURIComponent(cityHeader) : "-";
-    const ipHeader = getHeader(event, "x-forwarded-for");
-    const ip = ipHeader ? ipHeader.split(",")[0] : "-";
+import { withQuery } from "ufo";
 
-    return {
-      city,
-      ip,
-      region,
-    };
+export const createHandler = (region: string) => {
+  return defineEventHandler(async (event) => {
+    const body = await readBody(event);
+    const { url } = body;
+    if (!url) return;
+
+    try {
+      const startAt = Date.now();
+
+      await $fetch(withQuery(url, { __t: startAt }));
+
+      return {
+        region,
+        duration: Date.now() - startAt,
+        code: 200,
+      };
+    } catch (error) {
+      const err = error as { statusCode: number };
+      return {
+        region,
+        duration: -1,
+        code: err.statusCode,
+      };
+    }
   });
 };

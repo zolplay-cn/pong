@@ -1,5 +1,10 @@
 lockfileVersion: '6.0'
 
+dependencies:
+  ufo:
+    specifier: ^1.1.2
+    version: 1.1.2
+
 devDependencies:
   '@nuxtjs/tailwindcss':
     specifier: ^6.7.0
@@ -5388,7 +5393,6 @@ packages:
 
   /ufo@1.1.2:
     resolution: {integrity: sha512-TrY6DsjTQQgyS3E3dBaOXf0TpPD8u9FVrVYmKVegJuFw51n/YB9XPt+U6ydzFG5ZIN7+DIjPbNmXoBj9esYhgQ==}
-    dev: true
 
   /ultrahtml@1.2.0:
     resolution: {integrity: sha512-vxZM2yNvajRmCj/SknRYGNXk2tqiy6kRNvZjJLaleG3zJbSh/aNkOqD1/CVzypw8tyHyhpzYuwQgMMhUB4ZVNQ==}
