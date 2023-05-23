@@ -2,15 +2,19 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "NITRO_PRESET=vercel-edge nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "gen-api": "tsx ./server/scripts/routesGenerator.ts"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.7.0",
+    "@types/fs-extra": "^11.0.1",
     "@types/node": "^18",
-    "nuxt": "^3.5.1"
+    "fs-extra": "^11.1.1",
+    "nuxt": "^3.5.1",
+    "tsx": "^3.12.7"
   }
 }

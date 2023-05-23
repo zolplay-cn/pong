@@ -3,8 +3,8 @@
 
     export const config = {
       runtime: "edge",
-      regions: ["syd1"],
+      regions: ["cdg1"],
     };
 
-    export default createHandler("syd1");
+    export default createHandler("cdg1");
   
