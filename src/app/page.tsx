@@ -22,7 +22,9 @@ export default function Home() {
           method: "POST",
           body: JSON.stringify({ url }),
         });
-        console.log(data);
+        const job = (await data.json()) as Job;
+
+        setJobs((jobs) => [...jobs, job]);
       })
     );
 
