@@ -79,7 +79,7 @@ export default function Home() {
               <span className="text-xs text-black/40 ml-2">ms</span>
             </div>
             {job.duration !== -1 && !isRunning && (
-              <div className="absolute bottom-0 left-0 h-[1px] w-full">
+              <div className="absolute -bottom-[2px] left-0 h-[1px] w-full">
                 <motion.div
                   className="bg-black h-[1px]"
                   initial={{ width: "100%" }}
