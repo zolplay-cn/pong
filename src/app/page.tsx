@@ -1,7 +1,8 @@
 "use client";
 import { useRef, useState } from "react";
 import { regions } from "~/helpers/regions";
-import { motion, useAnimate } from "framer-motion";
+import { motion } from "framer-motion";
+
 type Job = { region: string; duration: number; statusCode: number };
 
 export default function Home() {
@@ -72,7 +73,7 @@ export default function Home() {
         {jobs.map((job) => (
           <li key={job.region} className="flex mt-5 justify-between relative">
             <div className="text-sm text-slate-600">
-              {regions[job.region].location}
+              {regions[job.region].emoji} {regions[job.region].location}
             </div>
             <div className="text-sm font-bold text-gray-900">
               {job.duration}
@@ -81,7 +82,7 @@ export default function Home() {
             {job.duration !== -1 && !isRunning && (
               <div className="absolute -bottom-[2px] left-0 h-[1px] w-full">
                 <motion.div
-                  className="bg-black h-[1px]"
+                  className="bg-black/20 h-[1px]"
                   initial={{ width: "100%" }}
                   animate={{
                     width: `${(job.duration / longestRef.current) * 100}%`,
