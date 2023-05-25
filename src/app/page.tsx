@@ -1,44 +1,72 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { regions } from "~/helpers/regions";
-import { motion } from "framer-motion";
 
-type Job = { region: string; duration: number; statusCode: number };
+type JobDTO = { region: string; duration: number; statusCode: number };
+type Job = Omit<JobDTO, "duration"> & { duration: number[]; avg: number };
+const TOTAL_REGIONS = Object.keys(regions).length;
 
 export default function Home() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [task, setTask] = useState<{ url: string; jobs: Job[] }>({
+    url: "",
+    jobs: [],
+  });
   const [url, setUrl] = useState("https://zolplay.com/");
   const [isRunning, setIsRunning] = useState(false);
-  const longestRef = useRef(0);
+  const [finishedRegions, setFinishedRegions] = useState(0);
 
   const handleTest = async () => {
     if (isRunning) return;
     setIsRunning(true);
-    setJobs([]);
-    longestRef.current = 0;
+    if (url !== task.url) {
+      setTask({ url, jobs: [] });
+    }
+    await runJobs();
+    setIsRunning(false);
+  };
 
+  const runJobs = async () => {
+    setFinishedRegions(0);
     await Promise.allSettled(
       Object.keys(regions).map(async (region) => {
-        const data = await fetch(`/api/${region}`, {
+        const response = await fetch(`/api/${region}`, {
           method: "POST",
           body: JSON.stringify({ url }),
+          signal: AbortSignal.timeout(30 * 1000),
         });
-        const job = (await data.json()) as Job;
+        const data = (await response.json()) as JobDTO;
 
-        if (job.duration > longestRef.current)
-          longestRef.current = job.duration;
-        setJobs((jobs) =>
-          [...jobs, job].sort((a, b) => a.duration - b.duration)
-        );
+        setFinishedRegions((count) => count + 1);
+        setTask((task) => {
+          const job: Job = task.jobs.find((job) => job.region === region) || {
+            ...data,
+            duration: [],
+            avg: 0,
+          };
+
+          const nextDuration =
+            data.duration === -1
+              ? job.duration
+              : [...job.duration, data.duration];
+          const avg =
+            nextDuration.reduce((result, cur) => result + cur, 0) /
+            nextDuration.length;
+
+          return {
+            ...task,
+            jobs: [
+              ...task.jobs.filter((job) => job.region !== region),
+              { ...job, duration: nextDuration, avg },
+            ].sort((a, b) => a.avg - b.avg),
+          };
+        });
       })
     );
-
-    setIsRunning(false);
   };
 
   return (
     <main className="max-w-[640px] mx-auto pb-32">
-      <div className="relative">
+      {/* <div className="relative">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true"
@@ -51,8 +79,8 @@ export default function Home() {
             }}
           />
         </div>
-      </div>
-      <div className="h-96">map</div>
+      </div> */}
+      {/* <div className="h-96">map</div> */}
       <div className="mt-6 flex max-w-md justify-center mx-auto">
         <input
           type="url"
@@ -66,33 +94,59 @@ export default function Home() {
           className="flex-none rounded-md ml-4 bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           onClick={handleTest}
         >
-          Test
+          Pong!
         </button>
       </div>
-      <ul className="mx-auto w-80 mt-14">
-        {jobs.map((job) => (
-          <li key={job.region} className="flex mt-5 justify-between relative">
-            <div className="text-sm text-slate-600">
-              {regions[job.region].emoji} {regions[job.region].location}
-            </div>
-            <div className="text-sm font-bold text-gray-900">
-              {job.duration}
-              <span className="text-xs text-black/40 ml-2">ms</span>
-            </div>
-            {job.duration !== -1 && !isRunning && (
-              <div className="absolute -bottom-[2px] left-0 h-[1px] w-full">
-                <motion.div
-                  className="bg-black/20 h-[1px]"
-                  initial={{ width: "100%" }}
-                  animate={{
-                    width: `${(job.duration / longestRef.current) * 100}%`,
-                  }}
-                />
+
+      <div className="mx-auto w-80 mt-12">
+        {!!task.url && (
+          <div className="text-xs text-right text-slate-400">
+            {finishedRegions}/{TOTAL_REGIONS}
+          </div>
+        )}
+        <ul>
+          {task.jobs.map((job) => (
+            <li key={job.region} className="mt-5 relative flex">
+              <div>
+                <div className="text-sm text-slate-600">
+                  {regions[job.region].emoji} {regions[job.region].location}
+                </div>
+                <ul className="flex flex-wrap mr-20">
+                  {job.duration?.length > 1 &&
+                    job.duration.map((duration, idx) => (
+                      <div
+                        key={job.region + idx}
+                        className={
+                          "text-xs scale-[0.85] text-black/30 px-1 py-[1px] border border-slate-500/10 rounded"
+                        }
+                      >
+                        {duration}
+                      </div>
+                    ))}
+                </ul>
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
+
+              <div className="text-sm font-bold text-gray-900 ml-auto">
+                <div>
+                  {isNaN(job.avg) ? "/" : job.avg.toFixed(0)}
+                  <span className="text-xs text-black/40 ml-2">ms</span>
+                </div>
+                {job.duration.length > 1 && (
+                  <div className="font-light text-xs mt-[2px]">
+                    <span className="text-green-600 mr-1">
+                      {Math.min(...job.duration)}
+                    </span>
+                    /
+                    <span className="text-red-600 ml-1">
+                      {Math.max(...job.duration)}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </main>
   );
 }

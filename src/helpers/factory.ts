@@ -15,7 +15,6 @@ export const createHandler = (region: string) => {
       return NextResponse.json({
         region,
         duration: Date.now() - startAt,
-
         code: 200,
       });
     } catch (error) {
