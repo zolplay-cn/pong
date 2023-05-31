@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { regions } from "~/helpers/regions";
+import { AreaChart, Button, Card, Grid, Legend, Metric, Subtitle, Text, TextInput } from '@tremor/react'
+import { GlobeAmericasIcon, LinkIcon } from '@heroicons/react/20/solid'
+import { GlobeAltIcon } from '@heroicons/react/24/outline'
 
 type JobDTO = { region: string; duration: number; statusCode: number };
 type Job = Omit<JobDTO, "duration"> & { duration: number[]; avg: number };
@@ -65,7 +68,7 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-[640px] mx-auto pb-32">
+    <main className="max-w-5xl mx-auto pb-32">
       {/* <div className="relative">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -82,71 +85,80 @@ export default function Home() {
       </div> */}
       {/* <div className="h-96">map</div> */}
       <div className="mt-6 flex max-w-md justify-center mx-auto">
-        <input
-          type="url"
+        <TextInput
+          type="text"
           required={false}
-          className="block w-full rounded-md border-0 py-1.5 px-2 outline-none text-gray-900/50 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-stone-400 sm:text-sm sm:leading-6"
           placeholder="Enter your URL"
           value={url}
+          icon={LinkIcon}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <button
+        <Button
           className="flex-none rounded-md ml-4 bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           onClick={handleTest}
+          icon={GlobeAltIcon}
         >
           Pong!
-        </button>
+        </Button>
       </div>
 
-      <div className="mx-auto w-80 mt-12">
-        {!!task.url && (
-          <div className="text-xs text-right text-slate-400">
+      <div className="my-6 max-w-md mx-auto">
+      {!!task.url && (
+        <Card>
+          <Text>
+            Regions tested
+          </Text>
+          <Metric>
             {finishedRegions}/{TOTAL_REGIONS}
-          </div>
-        )}
-        <ul>
-          {task.jobs.map((job) => (
-            <li key={job.region} className="mt-5 relative flex">
-              <div>
-                <div className="text-sm text-slate-600">
-                  {regions[job.region].emoji} {regions[job.region].location}
-                </div>
-                <ul className="flex flex-wrap mr-20">
-                  {job.duration?.length > 1 &&
-                    job.duration.map((duration, idx) => (
-                      <div
-                        key={job.region + idx}
-                        className={
-                          "text-xs scale-[0.85] text-black/30 px-1 py-[1px] border border-slate-500/10 rounded"
-                        }
-                      >
-                        {duration}
-                      </div>
-                    ))}
-                </ul>
-              </div>
+          </Metric>
+        </Card>
+      )}
+      </div>
 
-              <div className="text-sm font-bold text-gray-900 ml-auto">
-                <div>
-                  {isNaN(job.avg) ? "/" : job.avg.toFixed(0)}
-                  <span className="text-xs text-black/40 ml-2">ms</span>
-                </div>
-                {job.duration.length > 1 && (
-                  <div className="font-light text-xs mt-[2px]">
+      <Grid numCols={1} numColsMd={2} numColsLg={3} className="gap-3">
+        {task.jobs.map((job) => (
+          <Card key={job.region} className="mt-5 relative">
+            <Text className="text-xs">
+              {regions[job.region].emoji} {regions[job.region].location}
+            </Text>
+            {/*<ul className="flex flex-wrap mr-20">*/}
+            {/*  {job.duration?.length > 1 &&*/}
+            {/*    job.duration.map((duration, idx) => (*/}
+            {/*      <div*/}
+            {/*        key={job.region + idx}*/}
+            {/*        className={*/}
+            {/*          'text-xs scale-[0.85] text-black/30 px-1 py-[1px] border border-slate-500/10 rounded'*/}
+            {/*        }*/}
+            {/*      >*/}
+            {/*        {duration}*/}
+            {/*      </div>*/}
+            {/*    ))}*/}
+            {/*</ul>*/}
+
+            <AreaChart data={job.duration.map((duration, idx) => ({
+              idx: `#${idx+1}`,
+              Latency: duration,
+            }))} categories={['Latency']} index="idx"/>
+            <div className="text-sm font-bold text-gray-900 ml-auto flex flex-col items-end">
+              <Metric className="flex items-center">
+                {isNaN(job.avg) ? '/' : job.avg.toFixed(0)}
+                <Subtitle className="text-xs text-black/40 ml-2">ms</Subtitle>
+              </Metric>
+              {job.duration.length > 1 && (
+                <div className="font-light text-xs mt-[2px]">
                     <span className="text-green-600 mr-1">
                       {Math.min(...job.duration)}
                     </span>
-                    /
-                    <span className="text-red-600 ml-1">
+                  /
+                  <span className="text-red-600 ml-1">
                       {Math.max(...job.duration)}
                     </span>
-                  </div>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+                </div>
+              )}
+            </div>
+          </Card>
+        ))}
+      </Grid>
     </main>
   );
 }

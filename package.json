@@ -10,6 +10,8 @@
     "gen-api": "tsx ./scripts/routesGenerator.ts"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@tremor/react": "^2.9.1",
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
