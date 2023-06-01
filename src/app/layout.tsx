@@ -31,7 +31,9 @@ export default function RootLayout({
             is an open source project by
             <Link
               className="ml-2 font-bold text-black/90 inline-flex items-center space-x-1"
-              href={'https://zolplay.com'}
+              href={
+                'https://zolplay.com/?utm_source=pong&utm_medium=footer&utm_campaign=pong'
+              }
             >
               <LogoHelmet />
               <span>Zolplay</span>
