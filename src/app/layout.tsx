@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'Pong',
   description: '',
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({
@@ -29,10 +30,11 @@ export default function RootLayout({
             </Link>
             is an open source project by
             <Link
-              className="ml-2 font-bold text-black/90 inline-flex items-center"
+              className="ml-2 font-bold text-black/90 inline-flex items-center space-x-1"
               href={'https://zolplay.com'}
             >
-              <LogoHelmet /> Zolplay
+              <LogoHelmet />
+              <span>Zolplay</span>
             </Link>
             .
           </div>
