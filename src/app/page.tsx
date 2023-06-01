@@ -27,7 +27,7 @@ export default function Home() {
   const [isRunning, setIsRunning] = useState(false)
   const [finishedRegions, setFinishedRegions] = useState(0)
 
-  const handleTest = async () => {
+  const handlePong = async () => {
     if (isRunning) return
     setIsRunning(true)
     if (url !== task.url) {
@@ -104,7 +104,7 @@ export default function Home() {
         />
         <Button
           className="flex-none rounded-md ml-4 bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          onClick={handleTest}
+          onClick={handlePong}
           icon={GlobeAltIcon}
         >
           Pong!
@@ -128,19 +128,6 @@ export default function Home() {
             <Text className="text-xs">
               {regions[job.region].emoji} {regions[job.region].location}
             </Text>
-            {/*<ul className="flex flex-wrap mr-20">*/}
-            {/*  {job.duration?.length > 1 &&*/}
-            {/*    job.duration.map((duration, idx) => (*/}
-            {/*      <div*/}
-            {/*        key={job.region + idx}*/}
-            {/*        className={*/}
-            {/*          'text-xs scale-[0.85] text-black/30 px-1 py-[1px] border border-slate-500/10 rounded'*/}
-            {/*        }*/}
-            {/*      >*/}
-            {/*        {duration}*/}
-            {/*      </div>*/}
-            {/*    ))}*/}
-            {/*</ul>*/}
 
             <AreaChart
               data={job.duration.map((duration, idx) => ({
