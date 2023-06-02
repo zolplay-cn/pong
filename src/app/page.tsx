@@ -120,7 +120,7 @@ export default function Home() {
         {!!task.url && (
           <Card>
             <Text>Regions tested</Text>
-            <Metric>
+            <Metric className="font-bold">
               {finishedRegions}/{TOTAL_REGIONS}
             </Metric>
           </Card>
@@ -130,7 +130,7 @@ export default function Home() {
       <Grid numCols={1} numColsMd={2} numColsLg={3} className="gap-3">
         {task.jobs.map((job) => (
           <Card key={job.region} className="mt-5 relative">
-            <Text className="text-xs">
+            <Text className="text-xs font-medium">
               {regions[job.region].emoji} {regions[job.region].location}
             </Text>
 
@@ -141,9 +141,12 @@ export default function Home() {
               }))}
               categories={['Latency']}
               index="idx"
+              valueFormatter={(value) => `${value}ms`}
+              showLegend={false}
+              className="mt-3"
             />
             <div className="text-sm font-bold text-gray-900 ml-auto flex flex-col items-end">
-              <Metric className="flex items-center">
+              <Metric className="flex items-center font-bold">
                 {isNaN(job.avg) ? '/' : job.avg.toFixed(0)}
                 <Subtitle className="text-xs text-black/40 ml-2">ms</Subtitle>
               </Metric>
