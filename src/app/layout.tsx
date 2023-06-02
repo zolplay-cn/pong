@@ -1,15 +1,45 @@
 import Link from 'next/link'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Inter, Manrope } from 'next/font/google'
 import { LogoHelmet } from '~/icons'
+import { Metadata } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
+const fontSans = Manrope({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+})
 
+const title = 'Pong'
+const description =
+  'Pong: The ultimate edge network speed test for your website'
 export const metadata = {
-  title: 'Pong',
-  description: '',
+  title,
+  description,
   manifest: '/site.webmanifest',
-}
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  openGraph: {
+    title,
+    description,
+    type: 'website',
+    url: 'https://pong.zol.ai',
+    siteName: 'Pong, Powered by Zolplay',
+  },
+  twitter: {
+    site: '@zolplay',
+    creator: '@zolplay',
+    card: 'summary_large_image',
+    title,
+    description,
+  },
+} satisfies Metadata
 
 export default function RootLayout({
   children,
@@ -17,8 +47,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={`${fontSans.variable} font-sans antialiased`}>
+      <body className="tracking-tight">
         {children}
         <footer className="w-full pt-4 pb-6 text-center text-sm text-slate-600">
           <div className="inline-flex items-center">
