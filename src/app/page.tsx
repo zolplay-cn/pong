@@ -13,6 +13,8 @@ import {
 } from '@tremor/react'
 import { useState } from 'react'
 import { regions } from '~/helpers/regions'
+import Image from 'next/image'
+import pongLogo from './favicon.png'
 
 type JobDTO = { region: string; duration: number; statusCode: number }
 type Job = Omit<JobDTO, 'duration'> & { duration: number[]; avg: number }
@@ -93,7 +95,10 @@ export default function Home() {
         </div>
       </div> */}
       {/* <div className="h-96">map</div> */}
-      <div className="mt-6 flex max-w-md justify-center mx-auto">
+      <div className="my-6 w-full flex justify-center items-center">
+        <Image src={pongLogo} alt="" className="w-16 h-16" />
+      </div>
+      <div className="flex max-w-md justify-center mx-auto">
         <TextInput
           type="text"
           required={false}
