@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import './globals.css'
-import { Inter, Manrope } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 import { LogoHelmet } from '~/icons'
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 const fontSans = Manrope({
   subsets: ['latin'],
