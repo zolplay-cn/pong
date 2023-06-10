@@ -11,17 +11,17 @@ import {
   Text,
   TextInput,
 } from '@tremor/react'
+import Image from 'next/image'
 import { useState } from 'react'
 import { regions } from '~/helpers/regions'
-import Image from 'next/image'
 import pongLogo from './favicon.png'
+import { JobDTO, Task, useTaskHistory } from './hooks/useTaskHistory'
 
-type JobDTO = { region: string; duration: number; statusCode: number }
-type Job = Omit<JobDTO, 'duration'> & { duration: number[]; avg: number }
+export type Job = Omit<JobDTO, 'duration'> & { duration: number[]; avg: number }
 const TOTAL_REGIONS = Object.keys(regions).length
 
 export default function Home() {
-  const [task, setTask] = useState<{ url: string; jobs: Job[] }>({
+  const [task, setTask] = useState<Task>({
     url: '',
     jobs: [],
   })
@@ -38,9 +38,11 @@ export default function Home() {
     await runJobs()
     setIsRunning(false)
   }
+  const { appendTask } = useTaskHistory()
 
   const runJobs = async () => {
     setFinishedRegions(0)
+    const finishedJobs: JobDTO[] = []
     await Promise.allSettled(
       Object.keys(regions).map(async (region) => {
         const response = await fetch(`/api/${region}`, {
@@ -51,6 +53,7 @@ export default function Home() {
         const data = (await response.json()) as JobDTO
 
         setFinishedRegions((count) => count + 1)
+        finishedJobs.push(data)
         setTask((task) => {
           const job: Job = task.jobs.find((job) => job.region === region) || {
             ...data,
@@ -76,25 +79,11 @@ export default function Home() {
         })
       })
     )
+    appendTask(url, finishedJobs)
   }
 
   return (
     <main className="max-w-5xl mx-auto pb-32">
-      {/* <div className="relative">
-        <div
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-          aria-hidden="true"
-        >
-          <div
-            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-            style={{
-              clipPath:
-                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-            }}
-          />
-        </div>
-      </div> */}
-      {/* <div className="h-96">map</div> */}
       <div className="my-6 w-full flex justify-center items-center">
         <Image src={pongLogo} alt="" className="w-16 h-16" />
       </div>

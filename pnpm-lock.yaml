@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@heroicons/react':
@@ -55,6 +59,9 @@ dependencies:
   ufo:
     specifier: ^1.1.2
     version: 1.1.2
+  use-local-storage:
+    specifier: ^3.0.0
+    version: 3.0.0(react@18.2.0)
 
 devDependencies:
   '@types/fs-extra':
@@ -4394,6 +4401,14 @@ packages:
       '@types/react': 18.2.6
       react: 18.2.0
       tslib: 2.5.2
+    dev: false
+
+  /use-local-storage@3.0.0(react@18.2.0):
+    resolution: {integrity: sha512-wlPNnBCG3ULIJMr5A+dvWqLiPWCfsN1Kwijq+sAhT5yV4ex0u6XmZuNwP+RerIOfzBuz1pwSZuzhZMiluGQHfQ==}
+    peerDependencies:
+      react: '>=16.8.1'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /use-sidecar@1.1.2(@types/react@18.2.6)(react@18.2.0):
