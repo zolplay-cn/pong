@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import useLocalStorage from 'use-local-storage'
 import { Job } from '../page'
+import { isEqual } from 'ufo'
 
 export type JobDTO = { region: string; duration: number; statusCode: number }
 export type Task = { url: string; jobs: Job[] }
@@ -22,7 +23,7 @@ export function useTaskHistory() {
 
         const nextHistory =
           taskHistory?.filter((task) => {
-            if (task.url === url) {
+            if (isEqual(task.url, url)) {
               existTask = task
               return false
             }
