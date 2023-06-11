@@ -1,3 +1,3 @@
-- [ ] Save all task to indexDB.
-- [ ] Dashboard
-- [ ] Rate-limit stuff
+- [ ] Save all tasks to indexDB.
+- [ ] Dashboard.
+- [ ] Rate-limit stuff.
