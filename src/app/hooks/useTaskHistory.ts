@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 import useLocalStorage from 'use-local-storage'
-import { Job } from '../page'
-import { isEqual } from 'ufo'
 
-export type JobDTO = { region: string; duration: number; statusCode: number }
-export type Task = { url: string; jobs: Job[] }
+import { isEqual } from 'ufo'
+import { JobDTO } from '../types'
+
 export type TaskHistoryItem = {
   url: string
   history: { time: number; jobs: JobDTO[] }[]
