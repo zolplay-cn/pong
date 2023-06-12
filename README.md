@@ -1,3 +1,3 @@
-- [ ] Save all tasks to indexDB.
+- [ ] Better URL input experience.
 - [ ] Dashboard.
 - [ ] Rate-limit stuff.
