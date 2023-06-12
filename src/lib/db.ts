@@ -1,9 +1,5 @@
 import Dexie from 'dexie'
-
-interface Job {
-  region: string
-  duration: number
-}
+import { Job } from '~/types'
 
 interface Url {
   id?: number
