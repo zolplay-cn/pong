@@ -15,11 +15,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { regions } from '~/helpers/regions'
 import pongLogo from './favicon.png'
-import { JobDTO, Task } from '../hooks/useTaskHistory'
-import { db } from '../lib/db'
-import { isEqual } from 'ufo'
+import { Job, JobDTO, Task } from './types'
+import { db } from '~/lib/db'
 
-export type Job = Omit<JobDTO, 'duration'> & { duration: number[]; avg: number }
 const TOTAL_REGIONS = Object.keys(regions).length
 
 export default function Home() {
