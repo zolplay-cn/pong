@@ -15,7 +15,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { regions } from '~/helpers/regions'
 import pongLogo from './favicon.png'
-import { JobDTO, Task, useTaskHistory } from './hooks/useTaskHistory'
+import { JobDTO, Task } from '../hooks/useTaskHistory'
+import { db } from '../lib/db'
+import { isEqual } from 'ufo'
 
 export type Job = Omit<JobDTO, 'duration'> & { duration: number[]; avg: number }
 const TOTAL_REGIONS = Object.keys(regions).length
@@ -38,7 +40,6 @@ export default function Home() {
     await runJobs()
     setIsRunning(false)
   }
-  const { appendTask } = useTaskHistory()
 
   const runJobs = async () => {
     setFinishedRegions(0)
@@ -79,7 +80,7 @@ export default function Home() {
         })
       })
     )
-    appendTask(url, finishedJobs)
+    db.appendTask(url, finishedJobs)
   }
 
   return (
