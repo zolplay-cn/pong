@@ -47,20 +47,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${fontSans.variable} font-sans antialiased`}>
+    <html
+      lang="en"
+      className={`${fontSans.variable} font-sans antialiased bg-zinc-100 dark:bg-zinc-900`}
+    >
       <body className="tracking-tight">
         {children}
-        <footer className="w-full pt-4 pb-6 text-center text-sm text-slate-600">
+        <footer className="w-full pt-4 pb-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
           <div className="inline-flex items-center">
             <Link
-              className="font-bold mr-2 underline text-black/90"
+              className="font-bold mr-2 underline text-zinc-900/90 dark:text-zinc-100"
               href={'https://github.com/withyellow/pong'}
             >
               {'"Pong"'}
             </Link>
             is an open source project by
             <Link
-              className="ml-2 font-bold text-black/90 inline-flex items-center space-x-1"
+              className="ml-2 font-bold text-zinc-900/90 dark:text-zinc-100 inline-flex items-center space-x-1"
               href={
                 'https://zolplay.com/?utm_source=pong&utm_medium=footer&utm_campaign=pong'
               }
