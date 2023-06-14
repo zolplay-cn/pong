@@ -3,7 +3,6 @@ import { LinkIcon } from '@heroicons/react/20/solid'
 import { GlobeAltIcon } from '@heroicons/react/24/outline'
 import {
   AreaChart,
-  Button,
   Card,
   Grid,
   Metric,
@@ -17,6 +16,7 @@ import { regions } from '~/helpers/regions'
 import pongLogo from './favicon.png'
 import { Job, JobDTO, Task } from '../types'
 import { db } from '~/lib/db'
+import { Button } from './_ui/Button'
 
 const TOTAL_REGIONS = Object.keys(regions).length
 
@@ -99,11 +99,7 @@ export default function Home() {
           icon={LinkIcon}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <Button
-          className="flex-none rounded-md ml-4 bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          onClick={handlePong}
-          icon={GlobeAltIcon}
-        >
+        <Button className="ml-4" onClick={handlePong} icon={GlobeAltIcon}>
           Pong!
         </Button>
       </div>
@@ -119,7 +115,7 @@ export default function Home() {
         )}
       </div>
 
-      <Grid numCols={1} numColsMd={2} numColsLg={3} className="gap-3">
+      <Grid numItems={1} numItemsMd={2} numItemsLg={3} className="gap-3">
         {task.jobs.map((job) => (
           <Card key={job.region} className="mt-5 relative">
             <Text className="text-xs font-medium">
@@ -143,12 +139,12 @@ export default function Home() {
                 <Subtitle className="text-xs text-black/40 ml-2">ms</Subtitle>
               </Metric>
               {job.duration.length > 1 && (
-                <div className="font-light text-xs mt-[2px]">
-                  <span className="text-green-600 mr-1">
+                <div className="font-light text-xs mt-[2px] text-zinc-500">
+                  <span className="text-green-600 dark:text-green-400 mr-1">
                     {Math.min(...job.duration)}
                   </span>
                   /
-                  <span className="text-red-600 ml-1">
+                  <span className="text-red-600 dark:text-red-400 ml-1">
                     {Math.max(...job.duration)}
                   </span>
                 </div>
