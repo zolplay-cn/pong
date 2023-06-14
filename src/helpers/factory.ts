@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { withQuery } from 'ufo'
+import { withHttps, withQuery } from 'ufo'
 
 export const createHandler = (region: string) => {
   return async (req: NextRequest) => {
@@ -10,9 +10,7 @@ export const createHandler = (region: string) => {
     try {
       const startAt = Date.now()
 
-      const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`
-
-      await fetch(withQuery(urlWithProtocol, { __pong: startAt }))
+      await fetch(withQuery(withHttps(url), { __pong: startAt }))
 
       return NextResponse.json({
         region,
