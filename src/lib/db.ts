@@ -1,5 +1,5 @@
+import type { JobDTO } from '~/types'
 import Dexie from 'dexie'
-import { Job } from '~/types'
 
 interface Url {
   id?: number
@@ -10,7 +10,7 @@ interface Url {
 interface Task {
   id?: number
   url: string
-  jobs: Job[]
+  jobs: JobDTO[]
   createdAt: Date
 }
 
@@ -30,16 +30,16 @@ class PongDatabase extends Dexie {
     this.tasks = this.table('tasks')
   }
 
-  async appendTask(url: string, jobs: Job[]) {
-    let urlRecord = await db.urls.get({ url })
+  async appendTask(url: string, jobs: JobDTO[]) {
+    const urlRecord = await this.urls.get({ url })
     if (!urlRecord) {
-      await db.urls.add({
+      await this.urls.add({
         url,
         createdAt: new Date(),
       })
     }
 
-    await db.tasks.add({
+    await this.tasks.add({
       url,
       jobs,
       createdAt: new Date(),
