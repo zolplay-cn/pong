@@ -1,17 +1,17 @@
-import { outputFileSync } from "fs-extra";
-import { regions } from "../src/helpers/regions";
-import { join } from "path";
+import { join } from 'node:path'
+import { outputFileSync } from 'fs-extra'
+import { regions } from '../src/helpers/regions'
 
 Object.keys(regions).forEach((region) => {
   const code = `
-    import { createHandler } from "~/helpers/factory";
+import { createHandler } from '~/helpers/factory'
 
-    export const fetchCache = 'force-no-store';
-    export const runtime = 'edge';
-    export const preferredRegion = '${region}';
-    
-    export const POST = createHandler("${region}");
-  `;
+export const fetchCache = 'force-no-store'
+export const runtime = 'edge'
+export const preferredRegion = '${region}'
 
-  outputFileSync(join(__dirname, `../src/app/api/${region}/route.ts`), code);
-});
+export const POST = createHandler('${region}')
+  `
+
+  outputFileSync(join(__dirname, `../src/app/api/${region}/route.ts`), code)
+})

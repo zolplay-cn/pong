@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import './globals.css'
-import { Manrope } from 'next/font/google'
 import { LogoHelmet } from '~/icons'
 import type { Metadata } from 'next'
+import { Manrope } from 'next/font/google'
 
 const fontSans = Manrope({
   subsets: ['latin'],
@@ -49,21 +49,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} font-sans antialiased bg-zinc-100 dark:bg-zinc-900`}
+      className={`${fontSans.variable} bg-zinc-100 font-sans antialiased dark:bg-zinc-900`}
     >
       <body className="tracking-tight">
         {children}
-        <footer className="w-full pt-4 pb-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <footer className="w-full pb-6 pt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
           <div className="inline-flex items-center">
             <Link
-              className="font-bold mr-2 underline text-zinc-900/90 dark:text-zinc-100"
+              className="mr-2 font-bold text-zinc-900/90 underline dark:text-zinc-100"
               href={'https://github.com/withyellow/pong'}
             >
               {'"Pong"'}
             </Link>
             is an open source project by
             <Link
-              className="ml-2 font-bold text-zinc-900/90 dark:text-zinc-100 inline-flex items-center space-x-1"
+              className="ml-2 inline-flex items-center space-x-1 font-bold text-zinc-900/90 dark:text-zinc-100"
               href={
                 'https://zolplay.com/?utm_source=pong&utm_medium=footer&utm_campaign=pong'
               }
