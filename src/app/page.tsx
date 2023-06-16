@@ -1,4 +1,5 @@
 'use client'
+
 import { LinkIcon } from '@heroicons/react/20/solid'
 import { GlobeAltIcon } from '@heroicons/react/24/outline'
 import {
@@ -10,13 +11,13 @@ import {
   Text,
   TextInput,
 } from '@tremor/react'
+import { regions } from '~/helpers/regions'
+import { db } from '~/lib/db'
 import Image from 'next/image'
 import { useState } from 'react'
-import { regions } from '~/helpers/regions'
+import { Button } from '../_ui/Button'
+import type { Job, JobDTO, Task } from '../types'
 import pongLogo from './favicon.png'
-import { Job, JobDTO, Task } from '../types'
-import { db } from '~/lib/db'
-import { Button } from './_ui/Button'
 
 const TOTAL_REGIONS = Object.keys(regions).length
 
@@ -86,11 +87,11 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto pb-32">
-      <div className="my-6 w-full flex justify-center items-center">
-        <Image src={pongLogo} alt="" className="w-16 h-16" />
+    <main className="mx-auto max-w-5xl pb-32">
+      <div className="my-6 flex w-full items-center justify-center">
+        <Image src={pongLogo} alt="" className="h-16 w-16" />
       </div>
-      <div className="flex max-w-md justify-center mx-auto">
+      <div className="mx-auto flex max-w-md justify-center">
         <TextInput
           type="text"
           required={false}
@@ -104,7 +105,7 @@ export default function Home() {
         </Button>
       </div>
 
-      <div className="my-6 max-w-md mx-auto">
+      <div className="mx-auto my-6 max-w-md">
         {!!task.url && (
           <Card>
             <Text>Regions tested</Text>
@@ -117,7 +118,7 @@ export default function Home() {
 
       <Grid numItems={1} numItemsMd={2} numItemsLg={3} className="gap-3">
         {task.jobs.map((job) => (
-          <Card key={job.region} className="mt-5 relative">
+          <Card key={job.region} className="relative mt-5">
             <Text className="text-xs font-medium">
               {regions[job.region].emoji} {regions[job.region].location}
             </Text>
@@ -133,18 +134,18 @@ export default function Home() {
               showLegend={false}
               className="mt-3"
             />
-            <div className="text-sm font-bold text-gray-900 ml-auto flex flex-col items-end">
+            <div className="ml-auto flex flex-col items-end text-sm font-bold text-gray-900">
               <Metric className="flex items-center font-bold">
-                {isNaN(job.avg) ? '/' : job.avg.toFixed(0)}
-                <Subtitle className="text-xs text-black/40 ml-2">ms</Subtitle>
+                {Number.isNaN(job.avg) ? '/' : job.avg.toFixed(0)}
+                <Subtitle className="ml-2 text-xs text-black/40">ms</Subtitle>
               </Metric>
               {job.duration.length > 1 && (
-                <div className="font-light text-xs mt-[2px] text-zinc-500">
-                  <span className="text-green-600 dark:text-green-400 mr-1">
+                <div className="mt-[2px] text-xs font-light text-zinc-500">
+                  <span className="mr-1 text-green-600 dark:text-green-400">
                     {Math.min(...job.duration)}
                   </span>
                   /
-                  <span className="text-red-600 dark:text-red-400 ml-1">
+                  <span className="ml-1 text-red-600 dark:text-red-400">
                     {Math.max(...job.duration)}
                   </span>
                 </div>
