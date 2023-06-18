@@ -53,7 +53,7 @@ export default function RootLayout({
       className={`${fontSans.variable} bg-zinc-100 font-sans antialiased dark:bg-zinc-900`}
     >
       <body className="tracking-tight">
-        {children}
+        <main className="mx-auto max-w-5xl pb-32">{children}</main>
         <footer className="w-full pb-6 pt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
           <div className="inline-flex items-center">
             <Link

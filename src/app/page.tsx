@@ -100,7 +100,7 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl pb-32">
+    <>
       <div className="my-6 flex w-full items-center justify-center">
         <Image src={pongLogo} alt="" className="h-16 w-16" />
       </div>
@@ -167,6 +167,6 @@ export default function Home() {
           </Card>
         ))}
       </Grid>
-    </main>
+    </>
   )
 }
