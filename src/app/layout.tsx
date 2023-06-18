@@ -3,6 +3,7 @@ import './globals.css'
 import { LogoHelmet } from '~/icons'
 import type { Metadata } from 'next'
 import { Manrope } from 'next/font/google'
+import { Toaster } from 'sonner'
 
 const fontSans = Manrope({
   subsets: ['latin'],
@@ -74,6 +75,7 @@ export default function RootLayout({
             .
           </div>
         </footer>
+        <Toaster />
       </body>
     </html>
   )
