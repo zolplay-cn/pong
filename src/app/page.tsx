@@ -15,6 +15,7 @@ import { regions } from '~/helpers/regions'
 import { db } from '~/lib/db'
 import Image from 'next/image'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../_ui/Button'
 import type { Job, JobDTO, Task } from '../types'
 import pongLogo from './favicon.png'
@@ -47,12 +48,24 @@ export default function Home() {
   const runJobs = async () => {
     setFinishedRegions(0)
     const finishedJobs: JobDTO[] = []
+
+    const response = await fetch('/api/token')
+    const { token } = (await response.json()) as { token: string }
+
+    if (!token) {
+      toast.error('Failed to get token')
+      return
+    }
+
     await Promise.allSettled(
       Object.keys(regions).map(async (region) => {
-        const response = await fetch(`/api/${region}`, {
+        const response = await fetch(`/api/regions/${region}`, {
           method: 'POST',
           body: JSON.stringify({ url }),
           signal: AbortSignal.timeout(30 * 1000),
+          headers: {
+            token,
+          },
         })
         const data = (await response.json()) as JobDTO
 
