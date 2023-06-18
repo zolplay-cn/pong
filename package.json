@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen-api": "tsx ./scripts/routesGenerator.ts"
+    "gen-api": "tsx ./scripts/routesGenerator.ts && npx prettier ./src/app/api/regions -w"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
