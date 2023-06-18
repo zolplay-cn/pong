@@ -13,5 +13,8 @@ export const preferredRegion = '${region}'
 export const POST = createHandler('${region}')
   `
 
-  outputFileSync(join(__dirname, `../src/app/api/${region}/route.ts`), code)
+  outputFileSync(
+    join(__dirname, `../src/app/api/regions/${region}/route.ts`),
+    code
+  )
 })
