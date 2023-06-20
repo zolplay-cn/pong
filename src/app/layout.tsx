@@ -18,6 +18,7 @@ export const metadata = {
   title,
   description,
   manifest: '/site.webmanifest',
+  metadataBase: new URL('https://pong.zol.ai'),
   robots: {
     index: true,
     follow: true,
