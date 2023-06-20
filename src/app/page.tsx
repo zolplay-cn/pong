@@ -13,12 +13,15 @@ import {
 } from '@tremor/react'
 import { regions } from '~/helpers/regions'
 import { db } from '~/lib/db'
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { withoutProtocol, withoutTrailingSlash } from 'ufo'
 import { Button } from '../_ui/Button'
 import type { Job, JobDTO, Task } from '../types'
 import pongLogo from './favicon.png'
+import { useURLs } from './hooks/useURLs'
 
 const TOTAL_REGIONS = Object.keys(regions).length
 
@@ -27,11 +30,14 @@ export default function Home() {
     url: '',
     jobs: [],
   })
-  const [url, setUrl] = useState('https://zolplay.com/')
+  const [input, setInput] = useState('https://zolplay.com/')
   const [isRunning, setIsRunning] = useState(false)
   const [finishedRegions, setFinishedRegions] = useState(0)
+  const urls = useURLs()
+  const [matchedURLs, setMatchedURLs] = useState<string[]>([])
 
-  const handlePong = async () => {
+  const handlePong = async (url: string) => {
+    setMatchedURLs([])
     if (isRunning) return
     setIsRunning(true)
     if (url !== task.url) {
@@ -39,13 +45,13 @@ export default function Home() {
     }
 
     try {
-      await runJobs()
+      await runJobs(url)
     } finally {
       setIsRunning(false)
     }
   }
 
-  const runJobs = async () => {
+  const runJobs = async (url: string) => {
     setFinishedRegions(0)
     const finishedJobs: JobDTO[] = []
 
@@ -109,14 +115,62 @@ export default function Home() {
           type="text"
           required={false}
           placeholder="Enter your URL"
-          value={url}
+          value={input}
           icon={LinkIcon}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => {
+            const nextURL = e.target.value
+            setInput(nextURL)
+            if (!nextURL) {
+              setMatchedURLs([])
+              return
+            }
+
+            setMatchedURLs(
+              Array.from(
+                new Set(
+                  urls
+                    .filter((existURL) => existURL.url.includes(nextURL))
+                    .map((item) =>
+                      withoutProtocol(withoutTrailingSlash(item.url))
+                    )
+                )
+              )
+            )
+          }}
         />
-        <Button className="ml-4" onClick={handlePong} icon={GlobeAltIcon}>
+        <Button
+          className="ml-4"
+          onClick={() => handlePong(input)}
+          icon={GlobeAltIcon}
+        >
           Pong!
         </Button>
       </div>
+      <AnimatePresence>
+        {matchedURLs.length && (
+          <motion.ul
+            className="mx-auto mt-4 flex max-w-md"
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            exit={{ scaleY: 0 }}
+            style={{ originX: 0.5, originY: 0 }}
+            transition={{ ease: 'easeInOut', duration: 0.05 }}
+          >
+            {matchedURLs.map((url) => (
+              <li
+                key={url}
+                className="mr-1 cursor-pointer text-sm text-black/50 underline"
+                onClick={() => {
+                  setInput(url)
+                  handlePong(url)
+                }}
+              >
+                {url}
+              </li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
 
       <div className="mx-auto my-6 max-w-md">
         {!!task.url && (
