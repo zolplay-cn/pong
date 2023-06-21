@@ -5,6 +5,7 @@ interface Url {
   id?: number
   url: string
   createdAt: Date
+  updatedAt: Date
 }
 
 interface Task {
@@ -22,7 +23,7 @@ class PongDatabase extends Dexie {
     super('Pong')
 
     this.version(1).stores({
-      urls: '++id, url, tasks, createdAt',
+      urls: '++id, url, tasks, createdAt, updatedAt',
       tasks: '++id, url, jobs, createdAt',
     })
 
@@ -36,7 +37,10 @@ class PongDatabase extends Dexie {
       await this.urls.add({
         url,
         createdAt: new Date(),
+        updatedAt: new Date(),
       })
+    } else {
+      await this.urls.update(urlRecord, { updatedAt: new Date() })
     }
 
     await this.tasks.add({
@@ -44,6 +48,14 @@ class PongDatabase extends Dexie {
       jobs,
       createdAt: new Date(),
     })
+  }
+
+  async allURLs() {
+    return this.urls.count()
+  }
+
+  async getTasks() {
+    // return this.tasks.where().toArray()
   }
 }
 
