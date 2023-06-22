@@ -187,7 +187,7 @@ export default function Home() {
         {task.jobs.map((job) => (
           <Card key={job.region} className="relative mt-5">
             <Text className="text-xs font-medium">
-              {regions[job.region].emoji} {regions[job.region].location}
+              {regions[job.region].emoji} {regions[job.region].region}
             </Text>
 
             <AreaChart
