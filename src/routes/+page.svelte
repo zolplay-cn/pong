@@ -1,2 +1,4 @@
-<h1 class="text-zinc-300">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="mx-auto flex max-w-md justify-center">
+	<input type="text" required={false} placeholder="Enter your URL" />
+	<button class="ml-4"> Pong! </button>
+</div>
