@@ -1,30 +1,35 @@
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { withHttps, withQuery } from 'ufo'
+import { withHttps, withQuery } from 'ufo';
+import type { RequestHandler } from '@sveltejs/kit';
 
 export const createHandler = (region: string) => {
-  return async (req: NextRequest) => {
-    const body = await req.json()
-    const { url } = body as { url: string }
-    if (!url) return
+	const handler: RequestHandler = async ({ request }) => {
+		const body = await request.json();
+		const { url } = body as { url: string };
+		if (!url) throw new Error('url is required');
 
-    try {
-      const startAt = Date.now()
+		try {
+			const startAt = Date.now();
 
-      await fetch(withQuery(withHttps(url), { __pong: startAt }))
+			await fetch(withQuery(withHttps(url), { __pong: startAt }));
 
-      return NextResponse.json({
-        region,
-        duration: Date.now() - startAt,
-        code: 200,
-      })
-    } catch (error) {
-      const err = error as { statusCode: number }
-      return NextResponse.json({
-        region,
-        duration: -1,
-        code: err.statusCode,
-      })
-    }
-  }
-}
+			return new Response(
+				JSON.stringify({
+					region,
+					duration: Date.now() - startAt,
+					code: 200
+				})
+			);
+		} catch (error) {
+			const err = error as { statusCode: number };
+			return new Response(
+				JSON.stringify({
+					region,
+					duration: -1,
+					code: err.statusCode
+				})
+			);
+		}
+	};
+
+	return handler;
+};
