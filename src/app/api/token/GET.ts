@@ -8,9 +8,11 @@ export async function GET(req: NextRequest) {
   const ip = ipAddress(req)
 
   if (!ip) {
-    return new Response('Bad Request', {
-      status: 404,
-    })
+    if (process.env.NODE_ENV !== 'development') {
+      return new Response('Bad Request', {
+        status: 404,
+      })
+    }
   }
 
   const ratelimit = new Ratelimit({
@@ -29,7 +31,7 @@ export async function GET(req: NextRequest) {
   const token = await new SignJWT({})
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setIssuer(ip)
+    .setIssuer(ip!)
     .setExpirationTime('5s')
     .sign(new TextEncoder().encode(process.env.TOKEN_SECRET))
 
